@@ -1,6 +1,15 @@
 package com.tjh.util;
 
-import static com.pica.test.Matchers.contains;
+import org.junit.Test;
+
+import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.math.BigDecimal;
+
+import static com.tjh.test.Matchers.contains;
 import static com.tjh.util.Classes.allInterfacesFor;
 import static com.tjh.util.Classes.implementsMethod;
 import static org.easymock.EasyMock.createMock;
@@ -11,14 +20,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import com.tjh.util.Block;
-import com.tjh.util.Classes;
-import com.tjh.util.Sets;
-import org.junit.Test;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 public class ClassesTests {
 
@@ -139,7 +140,14 @@ public class ClassesTests {
     @Test
     public void allInterfacesIncludesSuperInterfaces() {
         assertThat(allInterfacesFor(Interface3.class),
-                contains((Class) Interface3.class, Interface1.class, Interface2.class));
+                contains(Interface3.class, Interface1.class, Interface2.class));
+    }
+
+    @Test
+    public void annotatedMethodsWorks() throws NoSuchMethodException {
+        assertThat(Classes.annotatedMethods(AnnotatedMethodClass.class, MethodAnnotation.class),
+                contains(AbstractAnnotatedMethodClass.class.getMethod("someMethod"),
+                        AnnotatedMethodClass.class.getMethod("someOtherMethod")));
     }
 
     @Test
@@ -175,4 +183,20 @@ public class ClassesTests {
 
     private class Impl extends LoneClass{
     }
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@interface MethodAnnotation{
+
+}
+
+class AbstractAnnotatedMethodClass{
+    @MethodAnnotation
+    public void someMethod(){}
+}
+
+class AnnotatedMethodClass extends AbstractAnnotatedMethodClass{
+    @MethodAnnotation
+    public void someOtherMethod(){}
 }

@@ -1,13 +1,12 @@
 package com.tjh.util;
 
-import com.tjh.util.Files;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.FileFilter;
 
-import static com.pica.test.ArgumentMatchers.notEqualTo;
+import static com.tjh.test.ArgumentMatchers.notEqualTo;
 import static org.easymock.classextension.EasyMock.createMock;
 import static org.easymock.classextension.EasyMock.expect;
 import static org.easymock.classextension.EasyMock.replay;

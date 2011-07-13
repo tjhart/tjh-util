@@ -13,6 +13,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="module" module-name="tjh-test" scope="TEST" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -25,7 +26,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib/compile-time" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
           <root url="file://$MODULE_DIR$/devlib" />

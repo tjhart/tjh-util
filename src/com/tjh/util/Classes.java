@@ -1,5 +1,6 @@
 package com.tjh.util;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -233,5 +234,13 @@ public class Classes {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Collection<Method> annotatedMethods(Class<?> aClass,
+                                                      final Class<? extends Annotation> annotationClass) {
+        return Lists.select(aClass.getMethods(), new Block<Method, Boolean>() {
+            @Override
+            public Boolean invoke(Method method) { return method.getAnnotation(annotationClass) != null; }
+        });
     }
 }

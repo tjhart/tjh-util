@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * User: thart Date: Aug 23, 2008 Time: 3:27:46 PM
  */
 @SuppressWarnings({"UnusedDeclaration"})
-public class Maps {
+public class Maps{
     private static final Pattern MAP_PATTERN = Pattern.compile("^\\{\\s*(.*)}$");
     private static final Pattern ENTRY_PATTERN = Pattern.compile("([^=]+)=([^,\\s]+),?\\s*");
 
@@ -36,9 +36,10 @@ public class Maps {
      * @param others subsequent keys and values
      * @param <K>    The key type
      * @param <V>    the value type
+     *
      * @return a Map initialized with the keys and values passed in
      */
-    public static <K, V> Map<K, V> asMap(final K key1, final V value1, final Object... others) {
+    public static <K, V> Map<K, V> asMap(final K key1, final V value1, final Object... others){
         final Map<K, V> result = new HashMap<K, V>((others.length + 1) / 2);
         return fillMap(result, key1, value1, others);
     }
@@ -51,10 +52,12 @@ public class Maps {
      * @param others subsequent keys and values
      * @param <K>    The key type
      * @param <V>    the value type
+     *
      * @return a Map initialized with the keys and values passed in
+     *
      * @see #asMap(Object, Object, Object...)
      */
-    public static <K extends Enum<K>, V> Map<K, V> asMap(final K key1, final V value1, final Object... others) {
+    public static <K extends Enum<K>, V> Map<K, V> asMap(final K key1, final V value1, final Object... others){
         @SuppressWarnings({"unchecked"})
         final Map<K, V> result = new EnumMap<K, V>((Class<K>) key1.getClass());
         return fillMap(result, key1, value1, others);
@@ -62,9 +65,9 @@ public class Maps {
 
     @SuppressWarnings({"unchecked"})
     private static <K, V> Map<K, V> fillMap(final Map<K, V> result, final K key1, final V value1,
-                                            final Object... others) {
+                                            final Object... others){
         result.put(key1, value1);
-        for (int i = 0; i < others.length; i++) {
+        for(int i = 0; i < others.length; i++){
             result.put((K) others[i], (V) others[++i]);
         }
 
@@ -73,28 +76,30 @@ public class Maps {
 
     /**
      * Convenience method for creating maps. More typesafe than {@link #asMap(Object, Object, Object...)} since you
-     * provide types themselves as the first two parameters. This version of <code>asMap</code> will verify that
-     * all arguments can be cast to the appropriate types via {@link Class#cast}. Compile issues are still possible,
-     * but run-time problems are discovered at the call to 'asMap', instead of further away where values are used
+     * provide types themselves as the first two parameters. This version of <code>asMap</code> will verify that all
+     * arguments can be cast to the appropriate types via {@link Class#cast}. Compile issues are still possible, but
+     * run-time problems are discovered at the call to 'asMap', instead of further away where values are used
      *
      * @param keyType       key type for the map
      * @param valueType     value type for the map
      * @param keysAndValues keys and values for the map
      * @param <K>           The key type
      * @param <V>           the value type
+     *
      * @return A Map initialized with <code>keysAndValues</code>
      */
     @SuppressWarnings({"unchecked"})
     public static <K, V> Map<K, V> asMap(final Class<K> keyType, final Class<V> valueType,
-                                         final Object... keysAndValues) {
+                                         final Object... keysAndValues){
         final Map<K, V> result;
-        if (keyType.isEnum()) {
+        if(keyType.isEnum()){
             result = new EnumMap(keyType);
-        } else {
+        }
+        else{
             result = new HashMap<K, V>(keysAndValues.length / 2);
         }
 
-        for (int i = 0; i < keysAndValues.length; i++) {
+        for(int i = 0; i < keysAndValues.length; i++){
             final Object key = keysAndValues[i];
             final Object value = keysAndValues[++i];
             result.put(keyType.cast(key), valueType.cast(value));
@@ -106,25 +111,26 @@ public class Maps {
      * Takes a string of the form <code>"{key=value, ...}"</code> and coverts it to a map
      *
      * @param mapString The String to convert
+     *
      * @return A Map
      */
-    public static Map<String, String> toMap(final String mapString) {
-        return toMap(mapString, new Block2<String, String, Map.Entry<String, String>>() {
-            public Map.Entry<String, String> invoke(final String key, final String value) {
-                return new Map.Entry<String, String>() {
-                    public String getKey() { return key; }
+    public static Map<String, String> toMap(final String mapString){
+        return toMap(mapString, new Block2<String, String, Map.Entry<String, String>>(){
+            public Map.Entry<String, String> invoke(final String key, final String value){
+                return new Map.Entry<String, String>(){
+                    public String getKey(){ return key; }
 
-                    public String getValue() { return value; }
+                    public String getValue(){ return value; }
 
-                    public String setValue(final String value) { throw new UnsupportedOperationException(); }
+                    public String setValue(final String value){ throw new UnsupportedOperationException(); }
                 };
             }
         });
     }
 
     /**
-     * Takes a string of the form "{key=value, ...}" and converts it to a map, calling <code>converter</code>
-     * for each of the entries.
+     * Takes a string of the form "{key=value, ...}" and converts it to a map, calling <code>converter</code> for each
+     * of the entries.
      * <p/>
      * The converter accepts the key and value as strings, and returns a Map.Entry<K, V> instance
      *
@@ -132,16 +138,17 @@ public class Maps {
      * @param converter The block to call for each map entry
      * @param <K>       Key type for the result Map
      * @param <V>       Value type for the result map
+     *
      * @return A Map populated with the results of the calls to <code>converter</code>
      */
     public static <K, V> Map<K, V> toMap(final String mapString,
-                                         final Block2<String, String, ? extends Map.Entry<K, V>> converter) {
+                                         final Block2<String, String, ? extends Map.Entry<K, V>> converter){
         final Map<K, V> result = new HashMap<K, V>();
 
         final Matcher mapMatcher = MAP_PATTERN.matcher(mapString);
-        if (mapMatcher.matches()) {
+        if(mapMatcher.matches()){
             final Matcher entryMatcher = ENTRY_PATTERN.matcher(mapMatcher.group(1));
-            while (entryMatcher.find()) {
+            while(entryMatcher.find()){
                 final Map.Entry<K, V> entry = converter.invoke(entryMatcher.group(1), entryMatcher.group(2));
                 result.put(entry.getKey(), entry.getValue());
             }
@@ -157,13 +164,14 @@ public class Maps {
      * @param map   The map to search
      * @param <K>   Key type
      * @param <T>   value type
+     *
      * @return The collection of keys associated with <code>value</code>
      */
-    public static <K, T> Collection<K> keysFor(final T value, final Map<? extends K, ? extends T> map) {
+    public static <K, T> Collection<K> keysFor(final T value, final Map<? extends K, ? extends T> map){
         final List<K> keyList = new ArrayList<K>();
 
-        for (final Map.Entry<? extends K, ? extends T> entry : map.entrySet()) {
-            if (entry.getValue().equals(value)) {
+        for(final Map.Entry<? extends K, ? extends T> entry : map.entrySet()){
+            if(entry.getValue().equals(value)){
                 keyList.add(entry.getKey());
             }
         }
@@ -179,10 +187,12 @@ public class Maps {
      * @param others subsequent keys and values
      * @param <K>    The key type
      * @param <V>    the value type
+     *
      * @return an unmodifiable map initialized with the keys and values passed in
+     *
      * @see #asMap(Object, Object, Object...)
      */
-    public static <K, V> Map<K, V> asConstantMap(final K key1, final V value1, final Object... others) {
+    public static <K, V> Map<K, V> asConstantMap(final K key1, final V value1, final Object... others){
         return Collections.unmodifiableMap(asMap(key1, value1, others));
     }
 
@@ -194,27 +204,30 @@ public class Maps {
      * @param keysAndValues keys and values for the map
      * @param <K>           The key type
      * @param <V>           the value type
+     *
      * @return an unmodifiable map initialized with the keys and values passed in
+     *
      * @see #asMap(Class, Class, Object...)
      */
     public static <K, V> Map<K, V> asConstantMap(final Class<? extends K> keyType, final Class<? extends V> valueType,
-                                                 final Object... keysAndValues) {
+                                                 final Object... keysAndValues){
         return Collections.unmodifiableMap(asMap(keyType, valueType, keysAndValues));
     }
 
     /**
-     * Convenience method for navigating nested maps. This method takes a Map of nested maps. Each map in the chain
-     * to be navigated must use strings for the key values.
+     * Convenience method for navigating nested maps. This method takes a Map of nested maps. Each map in the chain to
+     * be navigated must use strings for the key values.
      * <p/>
      * The keypath should be of the form "key1.key2.key3". The last returned object is of type <V>
      *
      * @param map     The map to navigate
      * @param keypath The keypath to return the value for
      * @param <V>     The type of the return value
+     *
      * @return The value at <code>keypath</code>
      */
     @SuppressWarnings({"RedundantTypeArguments"})
-    public static <V> V valueFor(final Map<String, ?> map, final String keypath) {
+    public static <V> V valueFor(final Map<String, ?> map, final String keypath){
         return Maps.<String, V>valueFor(map, keypath.split("\\."));
     }
 
@@ -228,10 +241,11 @@ public class Maps {
      * @param keypath the keypath representing the value to be replaced
      * @param value   the new value
      * @param <V>     the value type
+     *
      * @return the old value at <code>keypath</code>
      */
     @SuppressWarnings({"unchecked"})
-    public static <V> V putValueFor(Map<String, ?> map, final String keypath, final V value) {
+    public static <V> V putValueFor(Map<String, ?> map, final String keypath, final V value){
         return putValueFor(map, value, keypath.split("\\."));
     }
 
@@ -243,12 +257,13 @@ public class Maps {
      * @param keySequence A list of keys to navigate
      * @param <K>         The key type
      * @param <V>         The expected return type
+     *
      * @return The value at <code>keySequence</code>
      */
     @SuppressWarnings({"unchecked"})
-    public static <K, V> V valueFor(final Map<? extends K, ?> map, final List<? extends K> keySequence) {
+    public static <K, V> V valueFor(final Map<? extends K, ?> map, final List<? extends K> keySequence){
         Object result = map;
-        for (final K key : keySequence) {
+        for(final K key : keySequence){
             result = ((Map<K, ?>) result).get(key);
         }
 
@@ -262,11 +277,13 @@ public class Maps {
      * @param keys A list of keys to navigate
      * @param <K>  The key type
      * @param <V>  The expected return type
+     *
      * @return The value at <code>keys</code>
+     *
      * @see #valueFor(Map, List)
      */
     @SuppressWarnings({"RedundantTypeArguments"})
-    public static <K, V> V valueFor(final Map<? extends K, ?> map, final K... keys) {
+    public static <K, V> V valueFor(final Map<? extends K, ?> map, final K... keys){
         return Maps.<K, V>valueFor(map, Arrays.asList(keys));
     }
 
@@ -283,12 +300,13 @@ public class Maps {
      * @param keys  the keys representing the value to be replaced
      * @param <K>   the key type
      * @param <V>   the value type
+     *
      * @return the old value at <code>keys</code>
      */
     @SuppressWarnings({"unchecked"})
-    public static <K, V> V putValueFor(Map<? extends K, ?> map, final V value, final List<? extends K> keys) {
+    public static <K, V> V putValueFor(Map<? extends K, ?> map, final V value, final List<? extends K> keys){
         int i = 0;
-        for (; i < keys.size() - 1; i++) {
+        for(; i < keys.size() - 1; i++){
             map = (Map<? extends K, ?>) map.get(keys.get(i));
         }
 
@@ -308,9 +326,119 @@ public class Maps {
      * @param keys  the keys representing the value to be replaced
      * @param <K>   the key type
      * @param <V>   the value type
+     *
      * @return the old value at <code>keys</code>
      */
-    public static <K, V> V putValueFor(final Map<? extends K, ?> map, final V value, final K... keys) {
+    public static <K, V> V putValueFor(final Map<? extends K, ?> map, final V value, final K... keys){
         return putValueFor(map, value, Arrays.asList(keys));
+    }
+
+    public static <K, V> Map<K, V> eachPair(Map<K, V> map, Block2<K, V, ?> block2){
+        for(Map.Entry<K, V> entry : map.entrySet()){
+            block2.invoke(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
+    public static <K, V> Map<K, V> deleteIf(final Map<K, V> map, final Block2<K, V, Boolean> block2){
+        return eachPair(map, new Block2<K, V, Object>(){
+            public Object invoke(K k, V v){
+                if(block2.invoke(k, v)) map.remove(k);
+                return null;
+            }
+        });
+    }
+
+    public static <K, V> Map<K, V> eachKey(Map<K, V> map, Block<K, ?> block){
+        for(K key : map.keySet()) block.invoke(key);
+
+        return map;
+    }
+
+    public static <K, V> Map<K, V> eachValue(Map<K, V> map, Block<V, ?> block){
+        for(V value : map.values()) block.invoke(value);
+
+        return map;
+    }
+
+    public static <K, V, R> List<R> flatten(Map<K, V> map){
+        final List<R> result = new ArrayList<R>();
+        eachPair(map, new Block2<K, V, Object>(){
+            @SuppressWarnings({"unchecked"})
+            public Object invoke(K k, V v){
+                result.add((R) k);
+                result.add((R) v);
+                return null;
+            }
+        });
+
+        return result;
+    }
+
+    public static <K, V> Map<V, K> invert(Map<K, V> originalMap){
+        final Map<V, K> result = new HashMap<V, K>();
+        eachPair(originalMap, new Block2<K, V, Object>(){
+            public Object invoke(K k, V v){
+                result.put(v, k);
+                return null;
+            }
+        });
+        return result;
+    }
+
+    public static <K, V> Map<K, V> keepIf(final Map<K, V> map, final Block2<K, V, Boolean> block2){
+        final List<K> removables = new ArrayList<K>();
+        eachPair(map, new Block2<K, V, Object>(){
+            public Object invoke(K k, V v){
+                if(!block2.invoke(k, v)) removables.add(k);
+                return null;
+            }
+        });
+
+        map.keySet().removeAll(removables);
+
+        return map;
+    }
+
+    public static <K, V> Map<K, V> reject(Map<K, V> map, final Block2<K, V, Boolean> block2){
+        final Map<K, V> result = new HashMap<K, V>();
+        eachPair(map, new Block2<K, V, Object>(){
+            public Object invoke(K k, V v){
+                if(!block2.invoke(k, v)) result.put(k, v);
+                return null;
+            }
+        });
+
+        return result;
+    }
+
+    public static <K, V> Map<K, V> select(Map<K, V> map, final Block2<K, V, Boolean> block2){
+        final Map<K, V> result = new HashMap<K, V>();
+        eachPair(map, new Block2<K, V, Object>(){
+            public Object invoke(K k, V v){
+                if(block2.invoke(k, v)) result.put(k, v);
+                return null;
+            }
+        });
+
+        return result;
+    }
+
+    public static <K, V> List<V> valuesFor(Map<K, V> map, K... keys){
+        List<V> result = new ArrayList<V>(keys.length);
+        for(int i = 0; i < keys.length; i++){
+            result.add(map.get(keys[i]));
+        }
+        
+        return result;
+    }
+
+    public static <K, V> Map<K, V> merge(Map<? extends K, ? extends V>... map) {
+        Map<K, V> result = new HashMap<K, V>();
+
+        for (int i = 0; i < map.length; i++) {
+            result.putAll(map[i]);
+        }
+        return result;
     }
 }

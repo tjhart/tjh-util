@@ -1,6 +1,12 @@
 package com.tjh.util;
 
-import static com.pica.test.Matchers.contains;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.lang.reflect.UndeclaredThrowableException;
+import java.util.Arrays;
+
+import static com.tjh.test.Matchers.contains;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.reset;
@@ -8,13 +14,6 @@ import static org.easymock.EasyMock.verify;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
-import com.tjh.util.CompositeFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.lang.reflect.UndeclaredThrowableException;
-import java.util.Arrays;
 
 public class CompositeFactoryTests {
     private MyComposite composite;
