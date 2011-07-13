@@ -1,0 +1,17 @@
+<project name="pica-util" basedir="." default="package">
+    <property name="pica-common.dir" location="../pica-common"/>
+  <property name="pica-common.ant.file" location="${pica-common.dir}/build.xml"/>
+    <import file="${pica-common.ant.file}"/>
+
+    <macrodef name="jdepend-report">
+        <sequential>
+            <jdepend-macro>
+                <excludes>
+                    <exclude name="java.*"/>
+                </excludes>
+            </jdepend-macro>
+        </sequential>
+    </macrodef>
+
+  <target name="cruise-package" depends="clean, unit-test, functional-test, jar, reports"/>
+</project>
