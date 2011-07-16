@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 
 public class PopulatingMapTests {
 
-    private PopulatingMap<String, Map> map;
+    private Map<String, Map<String, String>> map;
 
     @Test
     public void accessingNonExistentKeysReturnsInstance(){
