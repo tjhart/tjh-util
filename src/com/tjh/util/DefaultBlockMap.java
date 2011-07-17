@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class DefaultBlockMap<K, V> implements Map<K, V>{
-    private Block2<DefaultBlockMap<K, V>, Object, V> defaultBlock;
-    private Map<K, V> delegate = new HashMap<K, V>();
+    private final Block2<DefaultBlockMap<K, V>, Object, V> defaultBlock;
+    private final Map<K, V> delegate = new HashMap<K, V>();
 
     public DefaultBlockMap(Block2<DefaultBlockMap<K, V>, Object, V> block2){ this.defaultBlock = block2; }
 
