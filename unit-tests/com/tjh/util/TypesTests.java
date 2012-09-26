@@ -1,16 +1,14 @@
 package com.tjh.util;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-
-import com.tjh.util.Maps;
-import com.tjh.util.Types;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 import java.util.Map;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 @RunWith(Theories.class)
 public class TypesTests {
@@ -45,7 +43,7 @@ public class TypesTests {
     @DataPoint
     public static final Map<String, Object> BYTE = Maps.<String, Object>asMap("string", "1",
             "class", byte.class,
-            "expected", (byte)1);
+            "expected", (byte) 1);
     @DataPoint
     public static final Map<String, Object> SHORT = Maps.<String, Object>asMap("string", "9",
             "class", short.class,

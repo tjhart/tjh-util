@@ -1,11 +1,11 @@
 package com.tjh.util;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Array;
-import java.util.Map;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Utility methods for converting strings to any of the native types
@@ -42,16 +42,16 @@ public class Types {
         return result;
     }
 
-    public static Object translate(final String string, final Class<?> aClass) {
-        final Object result;
+    public static <T> T translate(final String string, final Class<? extends T> aClass) {
+        final T result;
         if (String.class.equals(aClass)) {
-            result = string;
+            result = (T) string;
         } else {
             try {
-                result = getTranslatingMethod(aClass).invoke(null, string);
+                result = (T) getTranslatingMethod(aClass).invoke(null, string);
+            } catch (IllegalAccessException e) { throw new RuntimeException(e); } catch (InvocationTargetException e) {
+                throw new RuntimeException(e.getCause());
             }
-            catch (IllegalAccessException e) { throw new RuntimeException(e); }
-            catch (InvocationTargetException e) { throw new RuntimeException(e.getCause()); }
         }
         return result;
     }
@@ -68,8 +68,7 @@ public class Types {
                 result = aClass.getMethod("valueOf", String.class);
             }
             return result;
-        }
-        catch (NoSuchMethodException e) { throw new RuntimeException(e); }
+        } catch (NoSuchMethodException e) { throw new RuntimeException(e); }
     }
 
     protected static char getChar(final String string) { return string.toCharArray()[0]; }

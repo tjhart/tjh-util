@@ -226,6 +226,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../tjh-test/tjh-test.iml" filepath="$PROJECT_DIR$/../tjh-test/tjh-test.iml" />
       <module fileurl="file://$PROJECT_DIR$/tjh-util.iml" filepath="$PROJECT_DIR$/tjh-util.iml" />
     </modules>
   </component>
@@ -240,6 +241,7 @@
   </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
+    <mapping directory="$PROJECT_DIR$/../tjh-test" vcs="Git" />
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
 </project>
