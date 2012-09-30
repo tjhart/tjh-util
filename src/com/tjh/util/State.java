@@ -1,69 +1,66 @@
 package com.tjh.util;
 
 public enum State {
-    
-    Alabama("Alabama","AL"),
-    Alaska("Alaska","AK"),
-    Arizona("Arizona","AZ"),
-    Arkansas("Arkansas","AR"),
-    California("California","CA"),
-    Colorado("Colorado","CO"),
-    Connecticut("Connecticut","CT"),
-    Delaware("Delaware","DE"),
-    DistrictOfColumbia("District of Columbia","DC"),
-    Florida("Florida","FL"),
-    Georgia("Georgia","GA"),
-    Hawaii("Hawaii","HI"),
-    Idaho("Idaho","ID"),
-    Illinois("Illinois","IL"),
-    Indiana("Indiana","IN"),
-    Iowa("Iowa","IA"),
-    Kansas("Kansas","KS"),
-    Kentucky("Kentucky","KY"),
-    Louisiana("Louisiana","LA"),
-    Maine("Maine","ME"),
-    Maryland("Maryland","MD"),
-    Massachusetts("Massachusetts","MA"),
-    Michigan("Michigan","MI"),
-    Minnesota("Minnesota","MN"),
-    Mississippi("Mississippi","MS"),
-    Missouri("Missouri","MO"),
-    Montana("Montana","MT"),
-    Nebraska("Nebraska","NE"),
-    Nevada("Nevada","NV"),
-    NewHampshire("New Hampshire","NH"),
-    NewJersey("New Jersey","NJ"),
-    NewMexico("New Mexico","NM"),
-    NewYork("New York","NY"),
-    NorthCarolina("North Carolina","NC"),
-    NorthDakota("North Dakota","ND"),
-    Ohio("Ohio","OH"),
-    Oklahoma("Oklahoma","OK"),
-    Oregon("Oregon","OR"),
-    Pennsylvania("Pennsylvania","PA"),
-    RhodeIsland("Rhode Island","RI"),
-    SouthCarolina("South Carolina","SC"),
-    SouthDakota("South Dakota","SD"),
-    Tennessee("Tennessee","TN"),
-    Texas("Texas","TX"),
-    Utah("Utah","UT"),
-    Vermont("Vermont","VT"),
-    Virginia("Virginia","VA"),
-    Washington("Washington","WA"),
-    WestVirginia("West Virginia","WV"),
-    Wisconsin("Wisconsin","WI"),
-    Wyoming("Wyoming","WY");
+
+    AL("Alabama"),
+    AK("Alaska"),
+    AZ("Arizona"),
+    AR("Arkansas"),
+    CA("California"),
+    CO("Colorado"),
+    CT("Connecticut"),
+    DE("Delaware"),
+    DC("District of Columbia"),
+    FL("Florida"),
+    GA("Georgia"),
+    HI("Hawaii"),
+    ID("Idaho"),
+    IL("Illinois"),
+    IN("Indiana"),
+    IA("Iowa"),
+    KS("Kansas"),
+    KY("Kentucky"),
+    LA("Louisiana"),
+    ME("Maine"),
+    MD("Maryland"),
+    MA("Massachusetts"),
+    MI("Michigan"),
+    MN("Minnesota"),
+    MS("Mississippi"),
+    MO("Missouri"),
+    MT("Montana"),
+    NE("Nebraska"),
+    NV("Nevada"),
+    NH("New Hampshire"),
+    NJ("New Jersey"),
+    NM("New Mexico"),
+    NY("New York"),
+    NC("North Carolina"),
+    ND("North Dakota"),
+    OH("Ohio"),
+    OK("Oklahoma"),
+    OR("Oregon"),
+    PA("Pennsylvania"),
+    RI("Rhode Island"),
+    SC("South Carolina"),
+    SD("South Dakota"),
+    TN("Tennessee"),
+    TX("Texas"),
+    UT("Utah"),
+    VT("Vermont"),
+    VA("Virginia"),
+    WA("Washington"),
+    WV("West Virginia"),
+    WI("Wisconsin"),
+    WY("Wyoming");
 
     private final String name;
-    private final String abbrev;
 
-    State(final String name, final String abbrev) {
-        this.name = name;
-        this.abbrev = abbrev;
-    }
+    State(final String name) { this.name = name; }
 
     /**
      * Get state by 2-letter abbreviation
+     *
      * @param abbrev 2-letter postal abbreviation
      * @return the State, null if none found
      */
@@ -75,6 +72,7 @@ public enum State {
 
     /**
      * Get state by name
+     *
      * @param name the state's full name
      * @return the State, null if none found
      */
@@ -86,5 +84,5 @@ public enum State {
 
     public String getName() { return name; }
 
-    public String getAbbreviation() { return abbrev; }
+    public String getAbbreviation() { return name(); }
 }
