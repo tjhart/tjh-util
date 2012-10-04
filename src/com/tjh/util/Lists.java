@@ -9,8 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.tjh.util.Classes.commonBaseClasses;
-
 public class Lists {
 
     /**
@@ -359,14 +357,19 @@ public class Lists {
 
     public static <T> T[] slice(final T[] theArray, final int start) { return slice(theArray, start, theArray.length); }
 
-    public static <T extends Comparable<? super T>> boolean sequential(final T... items) {
-        if (items.length == 1) return true;
+    public static <T extends Comparable<? super T>> boolean sequential(Collection<T> items){
+        if (items.size() == 1) return true;
 
-        T last = items[0];
+        T last = items.iterator().next();
         for (T item : items) {
             if (last.compareTo(item) > 0) return false;
             last = item;
         }
         return true;
+
+    }
+
+    public static <T extends Comparable<? super T>> boolean sequential(final T... items) {
+        return sequential(Arrays.asList(items));
     }
 }
