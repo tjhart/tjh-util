@@ -11,6 +11,12 @@ public class DefaultBlockMap<K, V> implements Map<K, V>{
 
     public DefaultBlockMap(Block2<DefaultBlockMap<K, V>, Object, V> block2){ this.defaultBlock = block2; }
 
+    //object
+
+    @Override
+    public String toString() { return delegate.toString(); }
+
+    //map
     public V get(Object o){ return delegate.containsKey(o) ? delegate.get(o) : defaultBlock.invoke(this, o); }
 
     public V put(K k, V v){ return delegate.put(k, v); }

@@ -17,12 +17,13 @@ public class PopulatingMap<K, V> extends DefaultBlockMap<K, V> {
         });
     }
 
-    public PopulatingMap(final Constructor<? extends V> constructor) {
+    public PopulatingMap(final Constructor constructor) {
         this(new Block2<DefaultBlockMap<K, V>, Object, V>() {
             @Override
             public V invoke(DefaultBlockMap<K, V> map, Object key) {
                 try {
-                    return constructor.newInstance();
+                    //noinspection unchecked
+                    return (V) constructor.newInstance();
                 }
                 catch (InstantiationException e) { throw new RuntimeException(e); }
                 catch (IllegalAccessException e) { throw new RuntimeException(e); }
