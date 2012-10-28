@@ -1,26 +1,12 @@
 package com.tjh.util;
 
-import com.tjh.util.Range;
 import org.junit.Test;
 
-import java.util.Date;
-
-import static com.tjh.util.Dates.today;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class RangeTests {
-
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorDisallowsNullFirstArgument() {
-        new Range<Integer>(null, 10);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void constructorDisallowsNullSecondArgument() {
-        new Range<Date>(today(), null);
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void constructorRequiresFirstArgumentToBeLessThanOrEqualToSecondArgument() {
