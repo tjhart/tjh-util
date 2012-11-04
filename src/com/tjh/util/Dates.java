@@ -4,8 +4,6 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,15 +13,7 @@ import java.util.Date;
  */
 public class Dates {
 
-    private static final String DATE_FORMAT = "MMddyyyy";
     private static final long MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
-
-    public static Date delphiFutureDate() {
-        final Calendar calendar = Calendar.getInstance();
-        calendar.set(3000, Calendar.JANUARY, 1, 0, 0, 0);
-
-        return asCommonDate(calendar.getTime());
-    }
 
     public static Date from(final Date date, final int field, final int unit) {
         final Calendar calendar = calendarAtDate(date);
@@ -90,11 +80,6 @@ public class Dates {
         return midnightOn(cal.getTime());
     }
 
-    public static Date stripTimeFrom(final Date date) throws ParseException {
-        final DateFormat df = new SimpleDateFormat(DATE_FORMAT);
-        return df.parse(df.format(date));
-    }
-
     /**
      * @param date1 the first date
      * @param date2 the second date
@@ -114,10 +99,6 @@ public class Dates {
     public static String dateAsString(final Date date, final String format) {
         return new SimpleDateFormat(format).format(date);
     }
-
-    public static String dateAsOasisString(final Date date) { return dateAsString(date, DATE_FORMAT);}
-
-    public static String todayAsString() { return dateAsOasisString(today()); }
 
     public static String todayAsString(final String format) { return dateAsString(today(), format);}
 
