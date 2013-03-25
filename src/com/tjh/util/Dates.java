@@ -34,7 +34,7 @@ public class Dates {
         return calendar.getTime();
     }
 
-    private static Calendar calendarAtDate(final Date date) {
+    public static Calendar calendarAtDate(final Date date) {
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
@@ -94,6 +94,21 @@ public class Dates {
         final long startMills =
                 startCal.getTimeInMillis() + startCal.getTimeZone().getOffset(startCal.getTimeInMillis());
         return (endMills - startMills) / MILLIS_IN_A_DAY;
+    }
+
+    public static int age(Date dob) { return ageAsOf(dob, new Date()); }
+
+    public static int ageAsOf(Date dob, Date asOf){
+        Calendar dobCal = calendarAtDate(dob);
+        Calendar asOfCal = calendarAtDate(asOf);
+
+        int asOfYear = asOfCal.get(Calendar.YEAR);
+        int result = asOfYear - dobCal.get(Calendar.YEAR);
+
+        dobCal.set(Calendar.YEAR, asOfYear);
+        if (dobCal.after(asOfCal)) result--;
+        return result;
+
     }
 
     public static String dateAsString(final Date date, final String format) {
