@@ -64,7 +64,7 @@ public class Maps {
 
     @SuppressWarnings({"unchecked"})
     private static <K, V> Map<K, V> fillMap(final Map<K, V> result, final K key1, final V value1,
-                                            final Object... others) {
+            final Object... others) {
         result.put(key1, value1);
         for (int i = 0; i < others.length; i++) {
             result.put((K) others[i], (V) others[++i]);
@@ -88,7 +88,7 @@ public class Maps {
      */
     @SuppressWarnings({"unchecked"})
     public static <K, V> Map<K, V> asMap(final Class<K> keyType, final Class<V> valueType,
-                                         final Object... keysAndValues) {
+            final Object... keysAndValues) {
         final Map<K, V> result;
         if (keyType.isEnum()) {
             result = new EnumMap(keyType);
@@ -137,7 +137,7 @@ public class Maps {
      * @return A Map populated with the results of the calls to <code>converter</code>
      */
     public static <K, V> Map<K, V> toMap(final String mapString,
-                                         final Block2<String, String, ? extends Map.Entry<K, V>> converter) {
+            final Block2<String, String, ? extends Map.Entry<K, V>> converter) {
         final Map<K, V> result = new HashMap<K, V>();
 
         final Matcher mapMatcher = MAP_PATTERN.matcher(mapString);
@@ -200,7 +200,7 @@ public class Maps {
      * @see #asMap(Class, Class, Object...)
      */
     public static <K, V> Map<K, V> asConstantMap(final Class<? extends K> keyType, final Class<? extends V> valueType,
-                                                 final Object... keysAndValues) {
+            final Object... keysAndValues) {
         return Collections.unmodifiableMap(asMap(keyType, valueType, keysAndValues));
     }
 
@@ -426,15 +426,56 @@ public class Maps {
     }
 
     public static <K, V> Map.Entry<K, V> find(Map<? extends K, ? extends V> map,
-                                              Block2<? super K, ? super V, Boolean> block) {
+            Block2<? super K, ? super V, Boolean> block) {
         Map.Entry<K, V> result = null;
         for (Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
-            if(block.invoke(entry.getKey(), entry.getValue())){
+            if (block.invoke(entry.getKey(), entry.getValue())) {
                 result = (Map.Entry<K, V>) entry;
                 break;
             }
         }
 
         return result;
+    }
+
+    /**
+     * Returns a Map<K, V> where the values are indexed by whatever <code>block</code> returns.
+     * <p/>
+     * <code>collection</code> is iterated over, and <code>block</code> is called for every member. The results of
+     * <code>invoke</code> is used as the key for the map, and the value itself is added to the collection for that key
+     *
+     * @param collection The collection to index
+     * @param block      a block of code to invoke for each element of collection
+     * @param <K>        the type to index on
+     * @param <V>        the type of elements to be indexed
+     * @return A map where all the keys
+     */
+    public static <K, V> Map<K, Collection<V>> index(Collection<? extends V> collection,
+            Block<? super V, ? extends K> block) {
+        return index(collection, new HashMap<K, Collection<V>>(collection.size()), block);
+    }
+
+    /**
+     * @param collection The collection to index
+     * @param target     The Map to store the results in
+     * @param block      a block of code to invoke for each element of collection
+     * @param <K>        the type to index on
+     * @param <V>        the type of elements to be indexed
+     * @return A map where all the keys
+     * @see #index(java.util.Collection, Block)
+     */
+    public static <K, V> Map<K, Collection<V>> index(Collection<? extends V> collection, Map<K, Collection<V>> target,
+            Block<? super V, ? extends K> block) {
+        for (V v : collection) {
+            K key = block.invoke(v);
+            Collection<V> items = target.get(key);
+            if (items == null) {
+                items = new ArrayList<V>();
+                target.put(key, items);
+            }
+            items.add(v);
+        }
+
+        return target;
     }
 }
